@@ -3,6 +3,7 @@ import webbrowser
 import time
 import pyautogui
 import win32com.client
+import pywhatkit
 
 # Initialize Windows TTS
 speaker = win32com.client.Dispatch("SAPI.SpVoice")
@@ -22,7 +23,6 @@ while True:
             audio = r.listen(source)
             command = r.recognize_google(audio).lower()
             print(command)
-
             if "exit" in command:
                 speaker.Speak("Okay, going to sleep.")
                 break
@@ -38,10 +38,6 @@ while True:
             elif "open youtube" in command:
                 webbrowser.open("https://www.youtube.com")
                 speaker.Speak("Opening YouTube.")
-
-            elif "play believer" in command:
-                webbrowser.open("https://www.youtube.com/watch?v=W0DM5lcj6mw")
-                speaker.Speak("Playing Believer on YouTube.")
 
             elif "open instagram" in command:
                 webbrowser.open("https://www.instagram.com")
@@ -59,7 +55,19 @@ while True:
             elif "open chatgpt" in command or "chat gpt" in command:
                 webbrowser.open("https://chatgpt.com/")
                 speaker.Speak("Opening ChatGPT.")
+       
 
+            music_list = command.split()
+            if music_list[0] == "play":
+                music = " ".join(music_list[1:])
+                speaker.Speak(f"Playing {music}")
+                pywhatkit.playonyt(music)
+            if "search for" in command:
+                splitted_command = command.lower().split()
+                search_query = " ".join(splitted_command[2:])
+                speaker.Speak(f"Searching for {search_query}")
+                url = f"https://www.google.com/search?sca_esv=8b1424ffcf686292&q={search_query}"
+                webbrowser.open(url)
             else:
                 speaker.Speak("Sorry, I didn't understand the command.")
 

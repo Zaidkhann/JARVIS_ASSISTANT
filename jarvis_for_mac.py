@@ -3,6 +3,7 @@ import webbrowser
 import time
 import pyautogui
 import pyttsx3
+import pywhatkit
 
 # Initialize Windows TTS
 engine = pyttsx3.init()
@@ -71,7 +72,19 @@ while True:
                 webbrowser.open("https://chatgpt.com/")
                 engine.say("Opening ChatGPT.")
                 engine.runAndWait()
-
+            music_list = command.split()
+            if music_list[0] == "play":
+                music = " ".join(music_list[1:])
+                engine.say(f"Playing {music}")
+                engine.runAndWait()
+                pywhatkit.playonyt(music)
+            if "search for" in command:
+                splitted_command = command.lower().split()
+                search_query = " ".join(splitted_command[2:])
+                engine.say(f"Searching for {search_query}")
+                engine.runAndWait()
+                url = f"https://www.google.com/search?sca_esv=8b1424ffcf686292&q={search_query}"
+                webbrowser.open(url)
             else:
                 engine.say("Sorry, I didn't understand the command.")
                 engine.runAndWait()
